@@ -67,7 +67,7 @@ while True:
 
             # Generate unique filename
             while True:
-                rand_id = random.randint(100, 99999)
+                rand_id = random.randint(1, 10**18)
                 filename = f"{label}_{rand_id}.json"
                 path = os.path.join(SAVE_DIR, filename)
                 if not os.path.exists(path):
