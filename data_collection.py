@@ -86,3 +86,6 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+
+# ubuntu run command
+# sudo /home/dextra/projects/model_training/.venv/bin/python /home/dextra/projects/model_training/data_collection.py

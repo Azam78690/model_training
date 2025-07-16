@@ -25,5 +25,6 @@ with open(OUTPUT_FILE, "w") as f:
     f.write("Dataset Summary:\n")
     for label, count in counts.items():
         f.write(f"{label}: {count}\n")
+    f.write(f"\nLabels: {list(counts.keys())}\n")  # <-- Added line
 
 print(f"[✔] Summary saved to {OUTPUT_FILE}")

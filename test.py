@@ -3,7 +3,6 @@ import mediapipe as mp
 import torch
 import torch.nn as nn
 import numpy as np
-import keyboard
 import time
 import os
 
@@ -11,12 +10,8 @@ import os
 MODEL_PATH = "sign_model.pt"
 SEQUENCE_LEN = 30
 INPUT_SIZE = 63
-TRIGGER_KEY = "space"
-LABELS = [
-    "one",
-    "no",
-    # "three",
-]  # <- update this to match your training
+TRIGGER_KEY = ord(' ')  # Space key
+LABELS = ["two", "five"]  
 # ===================
 
 
@@ -49,6 +44,8 @@ print("[INFO] Hold SPACE to record a sign (2 sec). Release to predict. ESC to qu
 sequence = []
 recording = False
 start_time = None
+space_was_pressed = False
+last_predict_time = 0
 
 try:
     while True:
@@ -60,13 +57,48 @@ try:
         rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         result = mp_hands.process(rgb)
 
-        if keyboard.is_pressed(TRIGGER_KEY):
-            if not recording:
-                print("[REC] Recording started...")
-                sequence = []
-                start_time = time.time()
-                recording = True
+        # Check for key presses using OpenCV
+        key = cv2.waitKey(1) & 0xFF
+        current_time = time.time()
+        
+        # Simple state machine for space key
+        space_is_pressed = (key == TRIGGER_KEY)
+        
+        # Start recording when space is pressed and wasn't pressed before
+        if space_is_pressed and not space_was_pressed and not recording:
+            recording = True
+            sequence = []
+            start_time = time.time()
+            print("[REC] Recording started...")
+        
+        # Stop recording when space is released and we were recording
+        elif not space_is_pressed and space_was_pressed and recording:
+            recording = False
+            print(f"[STOP] Recording ended. Collected {len(sequence)} frames.")
+            
+            # Predict with debouncing (prevent multiple predictions)
+            if sequence and (current_time - last_predict_time) > 0.5:  # 500ms debounce
+                # Pad or trim to fixed SEQUENCE_LEN
+                if len(sequence) < SEQUENCE_LEN:
+                    pad = [[0] * INPUT_SIZE] * (SEQUENCE_LEN - len(sequence))
+                    sequence.extend(pad)
+                elif len(sequence) > SEQUENCE_LEN:
+                    sequence = sequence[:SEQUENCE_LEN]
 
+                # Convert to tensor and predict
+                input_tensor = torch.tensor([sequence], dtype=torch.float32)
+                with torch.no_grad():
+                    output = model(input_tensor)
+                    pred_idx = torch.argmax(output, dim=1).item()
+                    pred_label = LABELS[pred_idx]
+                    print(f"[PREDICTION] {pred_label}")
+                last_predict_time = current_time
+        
+        # Update state for next iteration
+        space_was_pressed = space_is_pressed
+        
+        # Record frames while recording
+        if recording:
             if result.multi_hand_landmarks:
                 landmarks = result.multi_hand_landmarks[0]
                 frame_data = [
@@ -74,29 +106,10 @@ try:
                 ]
                 sequence.append(frame_data)
 
-        elif recording:
-            print(f"[STOP] Recording ended. Collected {len(sequence)} frames.")
-            recording = False
-
-            # Pad or trim to fixed SEQUENCE_LEN
-            if len(sequence) < SEQUENCE_LEN:
-                pad = [[0] * INPUT_SIZE] * (SEQUENCE_LEN - len(sequence))
-                sequence.extend(pad)
-            elif len(sequence) > SEQUENCE_LEN:
-                sequence = sequence[:SEQUENCE_LEN]
-
-            # Convert to tensor and predict
-            input_tensor = torch.tensor([sequence], dtype=torch.float32)
-            with torch.no_grad():
-                output = model(input_tensor)
-                pred_idx = torch.argmax(output, dim=1).item()
-                pred_label = LABELS[pred_idx]
-                print(f"[PREDICTION] {pred_label}")
-
         # Draw webcam
         cv2.imshow("Webcam", frame)
 
-        if cv2.waitKey(1) & 0xFF == 27:  # ESC
+        if key == 27:  # ESC
             break
 
 except KeyboardInterrupt:
