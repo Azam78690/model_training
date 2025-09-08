@@ -1,0 +1,144 @@
+{
+  "sign_language": {
+    "v1": {
+      "path": "models/sign_language/sign_model_20250908_122045.pt",
+      "accuracy": 1.0,
+      "trained_on": "2025-09-08 12:20:45",
+      "metadata": {
+        "classes": [
+          "one",
+          "two"
+        ],
+        "num_samples": 8,
+        "training_config": {
+          "epochs": 100,
+          "batch_size": 16,
+          "learning_rate": 0.001,
+          "hidden_size": 128,
+          "num_layers": 2
+        }
+      }
+    },
+    "v2": {
+      "path": "models/sign_language/sign_model_20250908_124612.pt",
+      "accuracy": 1.0,
+      "trained_on": "2025-09-08 12:46:12",
+      "metadata": {
+        "classes": [
+          "one",
+          "two"
+        ],
+        "num_samples": 8,
+        "training_config": {
+          "epochs": 20,
+          "batch_size": 8,
+          "learning_rate": 0.001,
+          "hidden_size": 128,
+          "num_layers": 2
+        }
+      }
+    },
+    "v3": {
+      "path": "models/sign_language/sign_model_20250908_125610.pt",
+      "accuracy": 1.0,
+      "trained_on": "2025-09-08 12:56:10",
+      "metadata": {
+        "classes": [
+          "one",
+          "two"
+        ],
+        "num_samples": 8,
+        "training_config": {
+          "epochs": 100,
+          "batch_size": 8,
+          "learning_rate": 0.0001,
+          "hidden_size": 128,
+          "num_layers": 2
+        }
+      }
+    },
+    "v4": {
+      "path": "models/sign_language/sign_model_20250908_125932.pt",
+      "accuracy": 0.8333333333333333,
+      "trained_on": "2025-09-08 12:59:32",
+      "metadata": {
+        "classes": [
+          "no",
+          "one",
+          "two"
+        ],
+        "num_samples": 12,
+        "training_config": {
+          "epochs": 20,
+          "batch_size": 8,
+          "learning_rate": 0.001,
+          "hidden_size": 128,
+          "num_layers": 2
+        }
+      }
+    },
+    "v5": {
+      "path": "models/sign_language/sign_model_20250908_130036.pt",
+      "accuracy": 1.0,
+      "trained_on": "2025-09-08 13:00:36",
+      "metadata": {
+        "classes": [
+          "no",
+          "one",
+          "two"
+        ],
+        "num_samples": 12,
+        "training_config": {
+          "epochs": 200,
+          "batch_size": 8,
+          "learning_rate": 0.001,
+          "hidden_size": 128,
+          "num_layers": 2
+        }
+      }
+    }
+  },
+  "braille": {
+    "v1": {
+      "path": "models/braille/braille_model_20250908_123849.pt",
+      "accuracy": 0.992948717948718,
+      "trained_on": "2025-09-08 12:38:49",
+      "metadata": {
+        "classes": [
+          "A",
+          "B",
+          "C",
+          "D",
+          "E",
+          "F",
+          "G",
+          "H",
+          "I",
+          "J",
+          "K",
+          "L",
+          "M",
+          "N",
+          "O",
+          "P",
+          "Q",
+          "R",
+          "S",
+          "T",
+          "U",
+          "V",
+          "W",
+          "X",
+          "Y",
+          "Z"
+        ],
+        "num_samples": 1560,
+        "training_config": {
+          "epochs": 100,
+          "batch_size": 16,
+          "learning_rate": 0.001
+        }
+      }
+    }
+  }
+}
