@@ -1,0 +1,73 @@
+# Sign Language Prediction Commands
+# =================================
+
+# Basic Commands
+# --------------
+
+# Real-time prediction with camera
+python prediction/predict_sign.py --model_path model_path
+
+Examples
+python prediction/predict_sign.py --model_path models/sign_language/sign_model_20250908_130036.pt
+
+# Basic Braille Commands
+# ----------------------
+
+# Manual braille pattern input (6-dot pattern)
+python prediction/predict_braille.py --input manual --pattern "1,0,0,0,0,0"
+
+# Predict from braille image
+python prediction/predict_braille.py --input image --image_path datasets/braille/K/k1.JPG0rot.jpg --model_path models/braille/braille_model_20250908_123849.pt
+
+# Real-time braille prediction with camera
+python prediction/predict_braille.py --input realtime --model_path models/braille/braille_model_20250908_123849.pt
+
+# Braille prediction without text-to-speech
+python prediction/predict_braille.py --input manual --pattern "1,0,0,0,0,0" --no_tts
+
+# Real-time braille with custom duration
+python prediction/predict_braille.py --input realtime --model_path models/braille/braille_model_20250908_123849.pt --duration 5
+
+# Braille Examples
+# ---------------
+
+# Common braille patterns:
+# Letter 'A' (dot 1)
+python prediction/predict_braille.py --input manual --pattern "1,0,0,0,0,0"
+
+# Letter 'B' (dots 1,2)
+python prediction/predict_braille.py --input manual --pattern "1,1,0,0,0,0"
+
+# Letter 'C' (dots 1,4)
+python prediction/predict_braille.py --input manual --pattern "1,0,0,1,0,0"
+
+# Letter 'D' (dots 1,4,5)
+python prediction/predict_braille.py --input manual --pattern "1,0,0,1,1,0"
+
+# Letter 'E' (dots 1,5)
+python prediction/predict_braille.py --input manual --pattern "1,0,0,0,1,0"
+
+# Letter 'F' (dots 1,2,4)
+python prediction/predict_braille.py --input manual --pattern "1,1,0,1,0,0"
+
+# Braille Pattern Reference
+# ------------------------
+# Braille uses 6 dots arranged in 2 columns of 3 dots each:
+# 
+# 1 4
+# 2 5  
+# 3 6
+#
+# Pattern format: "1,2,3,4,5,6" where 1=dot present, 0=dot absent
+#
+# Common patterns:
+# A: 1,0,0,0,0,0    (dot 1)
+# B: 1,1,0,0,0,0    (dots 1,2)
+# C: 1,0,0,1,0,0    (dots 1,4)
+# D: 1,0,0,1,1,0    (dots 1,4,5)
+# E: 1,0,0,0,1,0    (dots 1,5)
+# F: 1,1,0,1,0,0    (dots 1,2,4)
+# G: 1,1,0,1,1,0    (dots 1,2,4,5)
+# H: 1,0,0,1,0,1    (dots 1,4,6)
+# I: 0,1,0,1,0,0    (dots 2,4)
+# J: 0,1,0,1,1,0    (dots 2,4,5)
